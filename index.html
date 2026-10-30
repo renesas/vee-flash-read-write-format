@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.11" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>vee_flash_notes</title>
+  <style>
+
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+</style>
+  <style type="text/css">:root {
+--brand: #2b0a8c;
+--accent: #e6007e;
+--ink: #1f2430;
+--muted: #667085;
+--line: #e4e7ec;
+--surface: #f7f7fb;
+}
+* {
+box-sizing: border-box;
+}
+html {
+scroll-behavior: smooth;
+}
+body {
+margin: 0 auto;
+max-width: 1120px;
+padding: 50px;
+color: var(--ink);
+background: #ffffff;
+font-family: "Segoe UI", Arial, sans-serif;
+line-height: 1.65;
+}
+a {
+color: var(--brand);
+}
+a:hover {
+color: var(--accent);
+}
+h1 {
+margin-top: 2.7rem;
+padding-bottom: 0.35rem;
+border-bottom: 2px solid var(--line);
+}
+h2 {
+margin-top: 2.4rem;
+padding-bottom: 0.3rem;
+border-bottom: 1px solid var(--line);
+}
+h3,
+h4,
+h5,
+h6 {
+margin-top: 2rem;
+}
+img {
+display: block;
+max-width: 100%;
+height: auto;
+margin: 1rem auto 0.35rem;
+}
+table {
+width: 100%;
+border-collapse: collapse;
+margin: 1.25rem 0;
+}
+th,
+td {
+border: 1px solid var(--line);
+padding: 0.7rem;
+vertical-align: top;
+}
+th {
+background: var(--surface);
+text-align: left;
+}
+blockquote {
+margin: 1.2rem 0;
+padding: 0.7rem 1rem;
+border-left: 4px solid var(--brand);
+background: var(--surface);
+}
+code {
+font-family: Consolas, "Courier New", monospace;
+}
+pre {
+overflow-x: auto;
+padding: 1rem;
+border-radius: 8px;
+background: var(--surface);
+}
+
+body > h1:first-of-type {
+margin: -50px calc(50% - 50vw) 3rem;
+padding: 3.5rem max(50px, calc((100vw - 1120px) / 2));
+border: 0;
+background: linear-gradient(135deg, #250777, #3e16a3);
+color: #ffffff;
+font-size: clamp(2rem, 5vw, 3.5rem);
+line-height: 1.1;
+}
+@media (max-width: 640px) {
+body {
+padding: 20px;
+}
+body > h1:first-of-type {
+margin-top: -20px;
+padding: 2.5rem 20px;
+}
+}
+</style>
+</head>
+<body>
+<h1 id="vee-flash-read-write-format">VEE FLASH READ WRITE FORMAT</h1>
+<h1 id="introduction">Introduction</h1>
+<p>This Software Building Block (SBB) demonstrates the use of the
+Renesas RA Virtual EEPROM (VEE) Flash Driver using the Renesas Flexible
+Software Package (FSP). The SBB provides reusable middleware integration
+and reference application code that illustrates how to store, retrieve,
+maintain, and manage non-volatile data within Data Flash memory.</p>
+<hr />
+<h1 id="1-what-use-case-does-this-sbb-demonstrate">1. What Use Case Does
+This SBB Demonstrate?</h1>
+<p>This SBB demonstrates how an application can use the RA Virtual
+EEPROM middleware to store persistent configuration or application data
+in Data Flash memory without directly managing flash erase/write
+operations.</p>
+<p>The demonstrated operations include: - Writing multiple data types to
+different Virtual EEPROM Record IDs. - Reading data back from Virtual
+EEPROM Record IDs. - Formatting the Virtual EEPROM region. - Querying
+Virtual EEPROM status. - Performing a refresh operation. - Displaying
+informational, success, and error messages through a serial
+terminal.</p>
+<p>Typical customer use cases include: - Production configuration
+storage - Device settings persistence - Calibration data storage -
+Product serial number storage - Event counters - Runtime parameter
+retention across resets</p>
+<h1 id="2-what-does-the-sbb-core-code-do">2. What Does the SBB Core Code
+Do?</h1>
+<p>The core SBB implementation provides an abstraction layer on top of
+the Renesas VEE middleware.</p>
+<p>It demonstrates write, read, status, format, and refresh operations
+while managing persistent data in Data Flash.</p>
+<h1 id="3-what-is-demoreference-application-code-versus-reusable-sbb-code">3.
+What Is Demo/Reference Application Code Versus Reusable SBB Code?</h1>
+<h2 id="reference-application-code">Reference Application Code</h2>
+<ul>
+<li>Menu handling</li>
+<li>User command processing</li>
+<li>Terminal interaction</li>
+<li>Printed status messages</li>
+<li>Demonstration data structures</li>
+<li>Example Record ID definitions</li>
+</ul>
+<h2 id="reusable-sbb-code">Reusable SBB Code</h2>
+<ul>
+<li>Virtual EEPROM initialization</li>
+<li>Read APIs</li>
+<li>Write APIs</li>
+<li>Status APIs</li>
+<li>Format APIs</li>
+<li>Refresh APIs</li>
+<li>Flash middleware integration</li>
+<li>Error handling</li>
+</ul>
+<h1 id="4-which-public-functions-should-i-look-at-first">4. Which Public
+Functions Should I Look At First?</h1>
+<p>Recommended review order: 1. Initialization routine 2. Write
+operation functions 3. Read operation functions 4. Status functions 5.
+Format functions 6. Refresh functions</p>
+<h1 id="5-what-configuration-assumptions-were-made-for-the-reference-board">5.
+What Configuration Assumptions Were Made for the Reference Board?</h1>
+<h2 id="terminal-configuration">Terminal Configuration</h2>
+<ul>
+<li>Baud Rate: 115200</li>
+<li>Data Bits: 8</li>
+<li>Parity: None</li>
+<li>Stop Bits: 1</li>
+<li>Flow Control: None</li>
+</ul>
+<h2 id="board-specific-assumptions">Board-Specific Assumptions</h2>
+<h3 id="sbb-ra0l1">SBB-RA0L1</h3>
+<ul>
+<li>Set J9 to pins 1-2.</li>
+</ul>
+<h3 id="fpb-ra2e3">FPB-RA2E3</h3>
+<ul>
+<li>Close E25, E28, E46, and E47.</li>
+</ul>
+<h3 id="fpb-ra4e2">FPB-RA4E2</h3>
+<ul>
+<li>Standard USB debug connection.</li>
+</ul>
+<h3 id="fpb-ra6e2">FPB-RA6E2</h3>
+<ul>
+<li>Standard USB debug connection.</li>
+</ul>
+<h3 id="fpb-ra8e1">FPB-RA8E1</h3>
+<ul>
+<li>Restore factory partition settings before execution.</li>
+</ul>
+<h1 id="6-what-must-i-change-for-my-board">6. What Must I Change For My
+Board?</h1>
+<p>Review and update as needed: - Pin assignments - UART configuration -
+Clock settings - Data Flash allocation - VEE middleware configuration -
+Task priorities and RTOS integration - Application-specific record
+definitions</p>
+<h1 id="7-what-dependencies-does-the-sbb-have">7. What Dependencies Does
+the SBB Have?</h1>
+<h2 id="software-dependencies">Software Dependencies</h2>
+<ul>
+<li>Renesas FSP</li>
+<li>Virtual EEPROM Middleware</li>
+<li>Flash Drivers</li>
+</ul>
+<h2 id="hardware-dependencies">Hardware Dependencies</h2>
+<ul>
+<li>RA MCU Data Flash</li>
+<li>UART / Virtual COM Port</li>
+<li>USB Debug Interface</li>
+</ul>
+<h1 id="8-what-behavior-and-performance-were-demonstrated">8. What
+Behavior and Performance Were Demonstrated?</h1>
+<p>Demonstrated behavior includes: - Data storage and retrieval - EEPROM
+formatting - Status monitoring - Refresh handling - User-triggered and
+automatic refresh operations</p>
+<p>No formal benchmark or performance measurements are provided.</p>
+<h1 id="9-what-files-are-safe-to-modify">9. What Files Are Safe to
+Modify?</h1>
+<h2 id="safe-to-modify">Safe to Modify</h2>
+<ul>
+<li>Application logic</li>
+<li>Data structures</li>
+<li>Record definitions</li>
+<li>User interface/menu code</li>
+</ul>
+<h2 id="modify-with-care">Modify with Care</h2>
+<ul>
+<li>FSP-generated configuration files</li>
+<li>Pin and clock configuration files</li>
+</ul>
+<h2 id="demo-only-files">Demo-Only Files</h2>
+<ul>
+<li>Example menus</li>
+<li>Sample workflows</li>
+<li>Demonstration datasets</li>
+</ul>
+<h1 id="10-what-happens-if-i-modify-the-source-and-later-want-to-adopt-a-newer-sbb-release">10.
+What Happens If I Modify the Source and Later Want to Adopt a Newer SBB
+Release?</h1>
+<p>Keep application customizations separate from reusable SBB code.</p>
+<p>Recommended: - Preserve standard SBB interfaces. - Isolate
+product-specific logic. - Minimize changes to core SBB modules.</p>
+<p>This approach simplifies future upgrades and integration of bug
+fixes.</p>
+<h1 id="board-support-summary">Board Support Summary</h1>
+<table>
+<thead>
+<tr>
+<th>SBB</th>
+<th>Board-Specific Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FPB-RA0L1</td>
+<td>J9 set to pins 1-2</td>
+</tr>
+<tr>
+<td>FPB-RA2E3</td>
+<td>Close E25, E28, E46, E47</td>
+</tr>
+<tr>
+<td>FPB-RA4E2</td>
+<td>Standard USB debug connection</td>
+</tr>
+<tr>
+<td>FPB-RA6E2</td>
+<td>Standard USB debug connection</td>
+</tr>
+<tr>
+<td>FPB-RA8E1</td>
+<td>Restore factory partition settings</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>
